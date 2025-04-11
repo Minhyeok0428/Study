@@ -12,7 +12,9 @@ public class Bullet : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        float deltaTime = Time.deltaTime;
-        transform.position += new Vector3(0, -_speed * deltaTime, 0);
+        transform.position += Vector3.up * _speed * Time.deltaTime;
+
+        if(transform.position.y > 10)
+            Destroy(gameObject);
     }
 }

@@ -1,3 +1,4 @@
+using System.Runtime.CompilerServices;
 using UnityEngine;
 
 public class PangPlayer : MonoBehaviour
@@ -14,7 +15,7 @@ public class PangPlayer : MonoBehaviour
 
     [SerializeField]
     private Sprite[] IdleSprites;
-    
+    [SerializeField]
     private Sprite[] WalkSprites;
 
     private SpriteRenderer _render;
@@ -39,19 +40,24 @@ public class PangPlayer : MonoBehaviour
             _render.flipX = true;
         }
 
-        if (Input.GetKey(KeyCode.RightArrow))
+       else if (Input.GetKey(KeyCode.RightArrow))
         {
             transform.position += Vector3.right * Time.deltaTime * _speed;
             _currentState = STATE.MOVE;
             _render.flipX = false;
         }
+        else
+        {
+            _currentState = STATE.IDLE;
+        }
     }
     private void IDLE_Action()
     {
-        Debug.Log("Idle Action");
         MoveInput();
+        SpriteAnimation(IdleSprites);
+        
 
-        _accTime = Time.deltaTime;
+        _accTime += Time.deltaTime;
 
         if(_accTime >= 0.2f)
         {
@@ -64,22 +70,31 @@ public class PangPlayer : MonoBehaviour
 
             _accTime = 0;
         }
-        if(Input.GetMouseButtonDown(0))
-        {
-            GameObject resGO = Resources.Load<GameObject>("Prefab/Bullet");
-            GameObject realGO = Instantiate(resGO);
-
-            
-        }    
 
 
 
-    }    
+    }
     private void MOVE_Action()
     {
         Debug.Log("Move Action");
         MoveInput();
-    }    
+        SpriteAnimation(WalkSprites);
+
+        _accTime += Time.deltaTime;
+
+        if (_accTime >= 0.2f)
+        {
+            _currentSpriteIndex++;
+
+            if (_currentSpriteIndex >= IdleSprites.Length)
+                _currentSpriteIndex = 0;
+
+            _render.sprite = WalkSprites[_currentSpriteIndex];
+
+            _accTime = 0;
+
+        }
+    }
     private void HITTED_Action()
     {
 
@@ -101,7 +116,16 @@ public class PangPlayer : MonoBehaviour
                 break;
         }
 
-        if(Input.GetMouseButtonDown(0))
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            GameObject resGO = Resources.Load<GameObject>("Prefab/Bullet");
+            GameObject realGO = Instantiate(resGO);
+
+            realGO.transform.position = transform.position + new Vector3(0, 0.5f, 0);
+        }
+
+
+        if (Input.GetMouseButtonDown(0))
         {
             _currentState = STATE.MOVE;
         }
@@ -110,4 +134,19 @@ public class PangPlayer : MonoBehaviour
             _currentState = STATE.IDLE;
         }    
     }
+    private float _changeTime = 0.2f;
+    private int _aniIndex = 0;
+
+    private void SpriteAnimation(Sprite[] sprites)
+    {
+        _accTime += Time.deltaTime;
+
+        if(_accTime >= _changeTime)
+        {
+            if(_render != null)
+                _render.sprite = sprites[_aniIndex];
+        }
+    }
 }
+
+

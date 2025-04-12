@@ -3,29 +3,28 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
-public class GameManager : MonoSingletone<GameManager>
+public class StartUI : MonoBehaviour
 {
     [SerializeField]
-    private Button _startButton;
-
-    [SerializeField]
     private Transform _canvasTrans;
+
+    private Button _button;
+
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        DontDestroyOnLoad(gameObject);
+        Button button = GetComponentInChildren<Button>();
 
-        _startButton.onClick.AddListener(OnClickStartButton);
+        if (button != null)
+        {
+            _button.onClick.AddListener(OnClickStartButton);
+        }
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
     private void OnClickStartButton()
     {
-        _startButton.gameObject.SetActive(false);
+        Destroy(gameObject);
 
         Debug.Log("OnClickStartButton");
 
@@ -37,9 +36,8 @@ public class GameManager : MonoSingletone<GameManager>
         uiComp.AddTimeClickEvent(OnClickTimeAttackMode);
         uiComp.AddStageClickEvent(OnClickStageMode);
 
-        
     }
-    private void OnClickTimeAttackMode()
+        private void OnClickTimeAttackMode()
     {
         Debug.Log("OnClickTimeAttackMode");
 
@@ -57,19 +55,17 @@ public class GameManager : MonoSingletone<GameManager>
         GameObject ballRes = Resources.Load<GameObject>("Prefab/Ball");
         GameObject ballGO = Instantiate(ballRes);
         ballGO.transform.position = new Vector3(0, 3.72f, 0);
-        
+
 
         GameObject bottomRes = Resources.Load<GameObject>("Prefab/Bottom");
         GameObject bottomGo = Instantiate(bottomRes);
 
     }
-    private void OnClickStageMode()
-    {
+        private void OnClickStageMode()
+        {
 
+        }
     }
-    public void CreateEffect()
-    {
-        GameObject boomRes = Resources.Load<GameObject>("Prefab/Boom");
-        GameObject boomGO = Instantiate(boomRes);
-    }
-}
+
+
+

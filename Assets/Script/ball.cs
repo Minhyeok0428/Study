@@ -3,6 +3,7 @@ using UnityEngine;
 
 public class ball : MonoBehaviour
 {
+
     private float _speed = 0; 
     private float _horizonSpeed = 3;
     private float _gravity = -9.8f;
@@ -55,6 +56,13 @@ public class ball : MonoBehaviour
     private void OnTriggerEnter2D(Collider2D other)
     {
         Debug.Log("OnTriggerEnter2D : " + other.gameObject.name);
+
+        GameManager manager = GameManager.Instance;
+        
+
+
+        Destroy(other.gameObject);
+        Destroy(gameObject);
     }
 }
 

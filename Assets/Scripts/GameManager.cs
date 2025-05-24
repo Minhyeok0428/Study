@@ -3,7 +3,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
-public class GameManager : MonoSingletone<GameManager>
+public class GameManager : MonoBehaviour
 {
     [SerializeField]
     private Button _startButton;
@@ -29,7 +29,7 @@ public class GameManager : MonoSingletone<GameManager>
 
         Debug.Log("OnClickStartButton");
 
-        GameObject resGO = Resources.Load<GameObject>("Prefab/ModeUI");
+        GameObject resGO = Resources.Load<GameObject>("Prefab/StartUI");
         Debug.Log("ResGo : " + resGO);
 
         GameObject sceneGO = Instantiate(resGO, _canvasTrans, false);
@@ -51,25 +51,10 @@ public class GameManager : MonoSingletone<GameManager>
         yield return SceneManager.LoadSceneAsync(sceneName);
 
         GameObject resGO = Resources.Load<GameObject>("Prefab/PangPlayer");
-        GameObject realGO = Instantiate(resGO);
-        realGO.transform.position = new Vector3(0, -2.66f, 0);
-
-        GameObject ballRes = Resources.Load<GameObject>("Prefab/Ball");
-        GameObject ballGO = Instantiate(ballRes);
-        ballGO.transform.position = new Vector3(0, 3.72f, 0);
-        
-
-        GameObject bottomRes = Resources.Load<GameObject>("Prefab/Bottom");
-        GameObject bottomGo = Instantiate(bottomRes);
-
+        Instantiate(resGO);
     }
     private void OnClickStageMode()
     {
 
-    }
-    public void CreateEffect()
-    {
-        GameObject boomRes = Resources.Load<GameObject>("Prefab/Boom");
-        GameObject boomGO = Instantiate(boomRes);
     }
 }
